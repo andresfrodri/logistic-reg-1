@@ -1,5 +1,5 @@
 import numpy as np
-
+import matplotlib.pyplot as plt
 N=100
 D=2
 
@@ -55,3 +55,11 @@ Y = sigmoid(z)
 
 # calculate the cross-entropy error
 print(cross_entropy(T, Y))
+
+#Let's visualize 
+plt.scatter(X[:,0], X[:,1], c=T, s=100, alpha=0.4 ) #This shows the two gaussian dis. centered at (-2,-2) and (2,2)
+#Now let's draw the line that we found 
+x_axis = np.linspace(-5, 5, 100) # because the closed-form solution... y=-x
+y_axis = -x_axis
+plt.plot(x_axis,y_axis)
+plt.show()

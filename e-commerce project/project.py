@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 def get_data():
@@ -73,3 +74,34 @@ def classification_rate(Y, P):
     return np.mean(Y == P)
 
 print("Score:", classification_rate(Y_train, predictions))
+
+
+#First we define the error function that will be minimized
+def cross_entropy(T, y_pred):
+    return -np.mean((T*np.log(y_pred)) + (1-T)*np.log(1-y_pred))
+#The two list bellow are to graph at the end
+train_costs = []
+tests_costs = []
+
+learning_rate = 0.002
+for i in range(10000):
+    pred_Y_train = forward(X_train, W, b)
+    pred_Y_test = forward(X_test, W, b)
+    
+    ctrain = cross_entropy(Y_train, pred_Y_train)
+    ctest = cross_entropy(Y_test, pred_Y_test)
+    train_costs.append(ctrain)
+    tests_costs.append(ctest)
+
+    #Let's make gradient descent
+    W -= learning_rate * X_train.T.dot(pred_Y_train - Y_train)
+    b -= learning_rate *(pred_Y_train-Y_train).sum()
+    if i %1000 == 0:
+        print(i,ctrain,ctest)
+
+print(f"Final train classification rate: {classification_rate(Y_train, np.round(pred_Y_train))}")
+print(f"Final test classification rate: {classification_rate(Y_test, np.round(pred_Y_test))}")
+plt.plot(train_costs, label='train cost')
+plt.plot(tests_costs, label='test cost')
+plt.legend()
+plt.show()

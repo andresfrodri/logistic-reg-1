@@ -63,3 +63,13 @@ x_axis = np.linspace(-5, 5, 100) # because the closed-form solution... y=-x
 y_axis = -x_axis
 plt.plot(x_axis,y_axis)
 plt.show()
+
+learning_rate = 0.1
+for i in range(100):
+    if i % 10 == 0:
+        print(cross_entropy(T, Y))
+    w += learning_rate * Xb.T.dot(T - Y)
+
+    Y = sigmoid(Xb.dot(w))
+
+print(f"Final w: {w}")
